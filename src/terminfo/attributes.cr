@@ -33,7 +33,7 @@ module Term
         color_terms = [
           "xterm-256color", "screen-256color", "tmux-256color",
           "rxvt-unicode-256color", "linux", "cygwin", "ansi",
-          "color", "console", "konsole", "terminator"
+          "color", "console", "konsole", "terminator",
         ]
 
         color_terms.any? { |ct| term.includes?(ct) }

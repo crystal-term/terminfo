@@ -32,7 +32,7 @@ module Term
       def get : NamedTuple(boolean: BooleanCaps, numeric: NumericCaps)
         {
           boolean: detect_boolean_capabilities,
-          numeric: detect_numeric_capabilities
+          numeric: detect_numeric_capabilities,
         }
       end
 
@@ -41,7 +41,7 @@ module Term
         detect_boolean_capabilities
       end
 
-      # Get numeric capabilities  
+      # Get numeric capabilities
       def numeric_capabilities : NumericCaps
         detect_numeric_capabilities
       end
@@ -84,7 +84,7 @@ module Term
 
       private def detect_boolean_capabilities : BooleanCaps
         term = ENV["TERM"]? || ""
-        
+
         BooleanCaps.new(
           auto_right_margin: !term.includes?("dumb"),
           back_color_erase: term.includes?("xterm") || term.includes?("screen"),
@@ -99,7 +99,7 @@ module Term
       private def detect_numeric_capabilities : NumericCaps
         size = Size.get
         colors = detect_color_count
-        
+
         NumericCaps.new(
           columns: size[:width],
           lines: size[:height],
@@ -112,10 +112,10 @@ module Term
 
       private def detect_color_count : Int32
         return 0 unless Attributes.get.color_support
-        
+
         # Check for true color
         return 16777216 if ENV["COLORTERM"]? == "truecolor"
-        
+
         # Check terminal type
         term = ENV["TERM"]? || ""
         case
@@ -130,11 +130,11 @@ module Term
 
       private def calculate_color_pairs(colors : Int32) : Int32
         return 0 if colors == 0
-        
+
         # For true color, return a reasonable number instead of colors²
         # which would overflow Int32
         case colors
-        when 16777216  # True color
+        when 16777216 # True color
           # Return max reasonable pairs (same as 256-color mode)
           65536
         when 256

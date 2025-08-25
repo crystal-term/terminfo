@@ -12,7 +12,7 @@ module Term
         "/lib/terminfo",
         "/usr/share/terminfo",
         "/usr/share/misc/terminfo",
-        "/usr/local/share/terminfo"
+        "/usr/local/share/terminfo",
       ].compact
 
       # Capability entry
@@ -34,10 +34,10 @@ module Term
       # Get entry for terminal type
       def get_entry(term : String? = nil) : Entry?
         term ||= ENV["TERM"]? || "dumb"
-        
+
         # Check cache
         return @@cache[term] if @@cache.has_key?(term)
-        
+
         # Try to load from database
         entry = load_entry(term)
         @@cache[term] = entry
@@ -48,7 +48,7 @@ module Term
       def get_capability(name : String, term : String? = nil) : Bool | Int32 | String | Nil
         entry = get_entry(term)
         return nil unless entry
-        
+
         cap = entry.capabilities[name]?
         cap.try(&.value)
       end
@@ -119,11 +119,11 @@ module Term
       # Try to find terminfo file
       private def find_terminfo_file(term : String) : Entry?
         return nil if term.empty?
-        
+
         # Terminfo files are stored as /path/to/terminfo/t/term
         # where 't' is the first character of the term name
         first_char = term[0]
-        
+
         TERMINFO_PATHS.each do |path|
           file_path = File.join(path, first_char.to_s, term)
           if File.exists?(file_path)
@@ -132,28 +132,28 @@ module Term
             return nil
           end
         end
-        
+
         nil
       end
 
       # Build capabilities for xterm
       private def build_xterm_capabilities : Hash(String, Capability)
         caps = {} of String => Capability
-        
+
         # Boolean capabilities
-        caps["am"] = Capability.new("am", :boolean, true)  # auto margins
-        caps["bce"] = Capability.new("bce", :boolean, true)  # back color erase
-        caps["km"] = Capability.new("km", :boolean, true)  # has meta key
-        caps["mir"] = Capability.new("mir", :boolean, true)  # move in insert mode
-        caps["msgr"] = Capability.new("msgr", :boolean, true)  # move in standout mode
-        caps["xenl"] = Capability.new("xenl", :boolean, true)  # newline glitch
-        
+        caps["am"] = Capability.new("am", :boolean, true)     # auto margins
+        caps["bce"] = Capability.new("bce", :boolean, true)   # back color erase
+        caps["km"] = Capability.new("km", :boolean, true)     # has meta key
+        caps["mir"] = Capability.new("mir", :boolean, true)   # move in insert mode
+        caps["msgr"] = Capability.new("msgr", :boolean, true) # move in standout mode
+        caps["xenl"] = Capability.new("xenl", :boolean, true) # newline glitch
+
         # Numeric capabilities
         caps["colors"] = Capability.new("colors", :numeric, 256)
         caps["cols"] = Capability.new("cols", :numeric, 80)
         caps["lines"] = Capability.new("lines", :numeric, 24)
         caps["pairs"] = Capability.new("pairs", :numeric, 65536)
-        
+
         # String capabilities (just the names, actual sequences would be parsed)
         caps["clear"] = Capability.new("clear", :string, "\e[H\e[2J")
         caps["cup"] = Capability.new("cup", :string, "\e[%i%p1%d;%p2%dH")
@@ -174,7 +174,7 @@ module Term
         caps["blink"] = Capability.new("blink", :string, "\e[5m")
         caps["setaf"] = Capability.new("setaf", :string, "\e[3%p1%dm")
         caps["setab"] = Capability.new("setab", :string, "\e[4%p1%dm")
-        
+
         caps
       end
 
@@ -187,12 +187,12 @@ module Term
       # Build capabilities for dumb terminal
       private def build_dumb_capabilities : Hash(String, Capability)
         caps = {} of String => Capability
-        
+
         caps["am"] = Capability.new("am", :boolean, true)
         caps["cols"] = Capability.new("cols", :numeric, 80)
         caps["lines"] = Capability.new("lines", :numeric, 24)
         caps["ind"] = Capability.new("ind", :string, "\n")
-        
+
         caps
       end
 
@@ -200,18 +200,18 @@ module Term
       private def build_generic_entry(term : String) : Entry
         # Detect capabilities based on terminal name
         caps = {} of String => Capability
-        
+
         # Basic capabilities
         caps["cols"] = Capability.new("cols", :numeric, 80)
         caps["lines"] = Capability.new("lines", :numeric, 24)
-        
+
         # Color support
         if term.includes?("256color")
           caps["colors"] = Capability.new("colors", :numeric, 256)
         elsif term.includes?("color")
           caps["colors"] = Capability.new("colors", :numeric, 16)
         end
-        
+
         # Common capabilities for non-dumb terminals
         unless term == "dumb"
           caps["am"] = Capability.new("am", :boolean, true)
@@ -222,7 +222,7 @@ module Term
           caps["bold"] = Capability.new("bold", :string, "\e[1m")
           caps["sgr0"] = Capability.new("sgr0", :string, "\e[0m")
         end
-        
+
         Entry.new(
           name: term,
           aliases: [] of String,

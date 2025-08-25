@@ -27,7 +27,7 @@ end
 # 256-color mode demonstration
 if Term::Terminfo.supports?(:"256color")
   puts "=== 256-Color Mode ==="
-  
+
   # Color cube
   puts "6x6x6 Color Cube:"
   (0...6).each do |g|
@@ -41,7 +41,7 @@ if Term::Terminfo.supports?(:"256color")
     puts
   end
   puts
-  
+
   # Grayscale
   puts "Grayscale ramp:"
   (232..255).each do |i|
@@ -54,7 +54,7 @@ end
 # True color demonstration
 if Term::Terminfo.supports?(:truecolor)
   puts "=== True Color (24-bit) ==="
-  
+
   # RGB gradient
   puts "RGB Gradient:"
   width = Term::Terminfo.width.clamp(0, 80)
@@ -65,7 +65,7 @@ if Term::Terminfo.supports?(:truecolor)
     print Term::Terminfo.color_rgb("█", fg: {r, g, b})
   end
   puts
-  
+
   # HSV color wheel simulation
   puts "\nColor wheel:"
   (0...width).each do |i|
@@ -74,20 +74,20 @@ if Term::Terminfo.supports?(:truecolor)
     h = hue / 60.0
     c = 1.0
     x = c * (1 - ((h % 2) - 1).abs)
-    
+
     rgb = case h.to_i
-    when 0 then {c, x, 0.0}
-    when 1 then {x, c, 0.0}
-    when 2 then {0.0, c, x}
-    when 3 then {0.0, x, c}
-    when 4 then {x, 0.0, c}
-    else {c, 0.0, x}
-    end
-    
+          when 0 then {c, x, 0.0}
+          when 1 then {x, c, 0.0}
+          when 2 then {0.0, c, x}
+          when 3 then {0.0, x, c}
+          when 4 then {x, 0.0, c}
+          else        {c, 0.0, x}
+          end
+
     r = (rgb[0] * 255).to_i
     g = (rgb[1] * 255).to_i
     b = (rgb[2] * 255).to_i
-    
+
     print Term::Terminfo.color_rgb("█", fg: {r, g, b})
   end
   puts
@@ -111,10 +111,10 @@ if Term::Terminfo.color?
   puts "=== Colored Styles ==="
   text = Term::Terminfo.color("Red bold text", fg: 1)
   puts Term::Terminfo.style(text, :bold)
-  
+
   text = Term::Terminfo.color_256("Orange italic", fg: 208)
   puts Term::Terminfo.style(text, :italic)
-  
+
   if Term::Terminfo.supports?(:truecolor)
     text = Term::Terminfo.color_rgb("Purple underline", fg: {128, 0, 255})
     puts Term::Terminfo.style(text, :underline)

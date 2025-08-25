@@ -27,7 +27,7 @@ module Term
       # Enable raw mode (disable echo, canonical mode, etc.)
       def enable_raw_mode(io = STDOUT)
         return unless io.tty?
-        
+
         {% if flag?(:unix) || flag?(:linux) %}
           # Save current termios settings
           system("stty -echo -icanon min 1 time 0")
@@ -42,7 +42,7 @@ module Term
       # Disable raw mode (restore normal mode)
       def disable_raw_mode(io = STDOUT)
         return unless io.tty?
-        
+
         {% if flag?(:unix) || flag?(:linux) %}
           system("stty echo icanon")
           @@current_state = @@current_state.copy_with(
@@ -56,7 +56,7 @@ module Term
       # Enable alternate screen buffer
       def enable_alternate_screen(io = STDOUT)
         return unless io.tty?
-        
+
         io.print(Sequences.alternate_screen_enable)
         io.flush
         @@current_state = @@current_state.copy_with(alternate_screen: true)
@@ -65,7 +65,7 @@ module Term
       # Disable alternate screen buffer
       def disable_alternate_screen(io = STDOUT)
         return unless io.tty?
-        
+
         io.print(Sequences.alternate_screen_disable)
         io.flush
         @@current_state = @@current_state.copy_with(alternate_screen: false)
@@ -74,7 +74,7 @@ module Term
       # Show cursor
       def show_cursor(io = STDOUT)
         return unless io.tty?
-        
+
         io.print(Sequences.cursor_show)
         io.flush
         @@current_state = @@current_state.copy_with(cursor_visible: true)
@@ -83,7 +83,7 @@ module Term
       # Hide cursor
       def hide_cursor(io = STDOUT)
         return unless io.tty?
-        
+
         io.print(Sequences.cursor_hide)
         io.flush
         @@current_state = @@current_state.copy_with(cursor_visible: false)
@@ -92,7 +92,7 @@ module Term
       # Enable mouse tracking
       def enable_mouse_tracking(io = STDOUT, extended = false, sgr = true)
         return unless io.tty?
-        
+
         if sgr
           io.print(Sequences.mouse_sgr_enable)
         elsif extended
@@ -107,7 +107,7 @@ module Term
       # Disable mouse tracking
       def disable_mouse_tracking(io = STDOUT)
         return unless io.tty?
-        
+
         io.print(Sequences.mouse_tracking_disable)
         io.print(Sequences.mouse_tracking_extended_disable)
         io.print(Sequences.mouse_sgr_disable)
@@ -118,7 +118,7 @@ module Term
       # Enable bracketed paste mode
       def enable_bracketed_paste(io = STDOUT)
         return unless io.tty?
-        
+
         io.print(Sequences.bracketed_paste_enable)
         io.flush
         @@current_state = @@current_state.copy_with(bracketed_paste: true)
@@ -127,7 +127,7 @@ module Term
       # Disable bracketed paste mode
       def disable_bracketed_paste(io = STDOUT)
         return unless io.tty?
-        
+
         io.print(Sequences.bracketed_paste_disable)
         io.flush
         @@current_state = @@current_state.copy_with(bracketed_paste: false)
@@ -136,7 +136,7 @@ module Term
       # Enable application keypad mode
       def enable_application_keypad(io = STDOUT)
         return unless io.tty?
-        
+
         io.print("\e=")
         io.flush
         @@current_state = @@current_state.copy_with(application_keypad: true)
@@ -145,7 +145,7 @@ module Term
       # Disable application keypad mode
       def disable_application_keypad(io = STDOUT)
         return unless io.tty?
-        
+
         io.print("\e>")
         io.flush
         @@current_state = @@current_state.copy_with(application_keypad: false)
@@ -191,7 +191,7 @@ module Term
         disable_mouse_tracking(io) if @@current_state.mouse_tracking
         disable_bracketed_paste(io) if @@current_state.bracketed_paste
         disable_application_keypad(io) if @@current_state.application_keypad
-        
+
         @@current_state = ModeState.new
       end
     end

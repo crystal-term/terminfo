@@ -3,7 +3,7 @@ module Term
     module Size
       extend self
 
-      DEFAULT_WIDTH = 80
+      DEFAULT_WIDTH  = 80
       DEFAULT_HEIGHT = 24
 
       # Get terminal size using multiple detection methods
@@ -41,10 +41,10 @@ module Term
       private def unix_size(io)
         # Try to get size from the terminal even if not a TTY
         # This handles cases where output is piped but we still want terminal size
-        
+
         # Since Crystal doesn't have a built-in terminal_size method,
         # we rely on the fallback methods (tput, stty, env)
-        
+
         nil
       end
 
@@ -52,13 +52,13 @@ module Term
       private def windows_size(io)
         {% if flag?(:windows) %}
           require "./windows/console"
-          
+
           handle = case io
                    when STDOUT then :stdout
                    when STDERR then :stderr
-                   else :stdout
+                   else             :stdout
                    end
-          
+
           Windows::Console.get_size(handle)
         {% else %}
           nil
@@ -69,7 +69,7 @@ module Term
       private def env_size
         width = ENV["COLUMNS"]?.try(&.to_i?)
         height = ENV["LINES"]?.try(&.to_i?)
-        
+
         if width && height && width > 0 && height > 0
           {width: width, height: height}
         else
@@ -80,19 +80,19 @@ module Term
       # Try to get size using tput command
       private def tput_size
         return nil unless system("which tput > /dev/null 2>&1")
-        
+
         begin
           # Try to get size from the controlling terminal
           width = `tput cols 2>/dev/tty`.strip.to_i?
           height = `tput lines 2>/dev/tty`.strip.to_i?
-          
+
           if width && height && width > 0 && height > 0
             {width: width, height: height}
           else
             # Fallback to regular tput if /dev/tty fails
             width = `tput cols 2>/dev/null`.strip.to_i?
             height = `tput lines 2>/dev/null`.strip.to_i?
-            
+
             if width && height && width > 0 && height > 0
               {width: width, height: height}
             else
@@ -107,29 +107,29 @@ module Term
       # Try to get size using stty command
       private def stty_size
         return nil unless system("which stty > /dev/null 2>&1")
-        
+
         begin
           # Try to get size from the controlling terminal first
           output = `stty size < /dev/tty 2>/dev/null`.strip
           parts = output.split
-          
+
           if parts.size == 2
             height = parts[0].to_i?
             width = parts[1].to_i?
-            
+
             if width && height && width > 0 && height > 0
               return {width: width, height: height}
             end
           end
-          
+
           # Fallback to regular stty
           output = `stty size 2>/dev/null`.strip
           parts = output.split
-          
+
           if parts.size == 2
             height = parts[0].to_i?
             width = parts[1].to_i?
-            
+
             if width && height && width > 0 && height > 0
               {width: width, height: height}
             else

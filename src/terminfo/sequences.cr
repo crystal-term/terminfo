@@ -5,15 +5,15 @@ module Term
       extend self
 
       # Control characters
-      BEL = "\a"    # Bell
-      BS  = "\b"    # Backspace
-      HT  = "\t"    # Horizontal Tab
-      LF  = "\n"    # Line Feed
-      VT  = "\v"    # Vertical Tab
-      FF  = "\f"    # Form Feed
-      CR  = "\r"    # Carriage Return
-      ESC = "\e"    # Escape
-      CSI = "\e["   # Control Sequence Introducer
+      BEL = "\a"  # Bell
+      BS  = "\b"  # Backspace
+      HT  = "\t"  # Horizontal Tab
+      LF  = "\n"  # Line Feed
+      VT  = "\v"  # Vertical Tab
+      FF  = "\f"  # Form Feed
+      CR  = "\r"  # Carriage Return
+      ESC = "\e"  # Escape
+      CSI = "\e[" # Control Sequence Introducer
 
       # Cursor control sequences
       def cursor_up(n = 1) : String
@@ -249,22 +249,22 @@ module Term
       end
 
       # ACS line drawing characters
-      ACS_ULCORNER = "l"  # Upper left corner
-      ACS_LLCORNER = "m"  # Lower left corner
-      ACS_URCORNER = "k"  # Upper right corner
-      ACS_LRCORNER = "j"  # Lower right corner
-      ACS_LTEE     = "t"  # Left tee
-      ACS_RTEE     = "u"  # Right tee
-      ACS_BTEE     = "v"  # Bottom tee
-      ACS_TTEE     = "w"  # Top tee
-      ACS_HLINE    = "q"  # Horizontal line
-      ACS_VLINE    = "x"  # Vertical line
-      ACS_PLUS     = "n"  # Plus (cross)
-      ACS_DIAMOND  = "`"  # Diamond
-      ACS_CKBOARD  = "a"  # Checkerboard
-      ACS_DEGREE   = "f"  # Degree symbol
-      ACS_PLMINUS  = "g"  # Plus/minus
-      ACS_BULLET   = "~"  # Bullet
+      ACS_ULCORNER = "l" # Upper left corner
+      ACS_LLCORNER = "m" # Lower left corner
+      ACS_URCORNER = "k" # Upper right corner
+      ACS_LRCORNER = "j" # Lower right corner
+      ACS_LTEE     = "t" # Left tee
+      ACS_RTEE     = "u" # Right tee
+      ACS_BTEE     = "v" # Bottom tee
+      ACS_TTEE     = "w" # Top tee
+      ACS_HLINE    = "q" # Horizontal line
+      ACS_VLINE    = "x" # Vertical line
+      ACS_PLUS     = "n" # Plus (cross)
+      ACS_DIAMOND  = "`" # Diamond
+      ACS_CKBOARD  = "a" # Checkerboard
+      ACS_DEGREE   = "f" # Degree symbol
+      ACS_PLMINUS  = "g" # Plus/minus
+      ACS_BULLET   = "~" # Bullet
 
       # Utility methods
       def strip_ansi(text : String) : String

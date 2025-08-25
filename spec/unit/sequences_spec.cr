@@ -51,8 +51,8 @@ describe Term::Terminfo::Sequences do
 
   describe "colors" do
     it "generates 8-color sequences" do
-      Term::Terminfo::Sequences.fg_color(1).should eq("\e[31m")  # Red
-      Term::Terminfo::Sequences.bg_color(2).should eq("\e[42m")  # Green
+      Term::Terminfo::Sequences.fg_color(1).should eq("\e[31m") # Red
+      Term::Terminfo::Sequences.bg_color(2).should eq("\e[42m") # Green
     end
 
     it "generates 256-color sequences" do
@@ -86,7 +86,7 @@ describe Term::Terminfo::Sequences do
 
     it "calculates length without ANSI sequences" do
       text = "\e[31mRed\e[0m \e[1mBold\e[0m"
-      Term::Terminfo::Sequences.length_without_ansi(text).should eq(8)  # "Red Bold"
+      Term::Terminfo::Sequences.length_without_ansi(text).should eq(8) # "Red Bold"
     end
   end
 end

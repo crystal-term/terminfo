@@ -118,16 +118,16 @@ module Term
       result = text
       styles.each do |style|
         prefix = case style
-        when :bold       then Sequences.bold
-        when :dim        then Sequences.dim
-        when :italic     then Sequences.italic
-        when :underline  then Sequences.underline
-        when :blink      then Sequences.blink
-        when :reverse    then Sequences.reverse
-        when :hidden     then Sequences.hidden
-        when :strikethrough then Sequences.strikethrough
-        else ""
-        end
+                 when :bold          then Sequences.bold
+                 when :dim           then Sequences.dim
+                 when :italic        then Sequences.italic
+                 when :underline     then Sequences.underline
+                 when :blink         then Sequences.blink
+                 when :reverse       then Sequences.reverse
+                 when :hidden        then Sequences.hidden
+                 when :strikethrough then Sequences.strikethrough
+                 else                     ""
+                 end
         result = prefix + result unless prefix.empty?
       end
       result + Sequences.reset
